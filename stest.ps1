@@ -36,3 +36,5 @@ function GetAuthToken {
  = GetAuthToken -ClientID  -ClientSecret  -TenantID 
 
 Add-AzureRMAccount -AccessToken .Access_Token -AccountId  | Out-Null
+
+New-AzureRmResourceGroup -Name jenkinsmaderg -Location EastUS2
