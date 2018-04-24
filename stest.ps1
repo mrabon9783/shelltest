@@ -1,39 +1,41 @@
 [CmdletBinding()]
 Param (
-    , , 
+    $ClientID, $ClientSecret, $TenantID
 )
 function GetAuthToken {
     [CmdletBinding()]
     Param (
-        , ,  
+        $ClientID, $ClientSecret, $TenantID 
     )
     
 
-     = {https://login.windows.net/ {0}/oauth2/token} -f  
-     = https://management.core.windows.net/;
+    $TokenEndpoint = {https://login.windows.net/ {0}/oauth2/token} -f $TenantID 
+    $ARMResource = "https://management.core.windows.net/";
     
-     = @{
-        'resource'      = 
-        'client_id'     = 
+    $Body = @{
+        'resource'      = $ARMResource
+        'client_id'     = $ClientID
         'grant_type'    = 'client_credentials'
-        'client_secret' = 
+        'client_secret' = $ClientSecret
     }
     
-     = @{
+    $params = @{
         ContentType = 'application/x-www-form-urlencoded'
         Headers     = @{'accept' = 'application/json'}
-        Body        = 
+        Body        = $Body
         Method      = 'Post'
-        URI         = 
+        URI         = $TokenEndpoint
     }
     
-     = Invoke-RestMethod @params
+    $token = Invoke-RestMethod @params
     
-    return 
+    return $token
 }
  
 # Getting authentication token
- = GetAuthToken -ClientID  -ClientSecret  -TenantID 
+$token = GetAuthToken -ClientID $ClientID -ClientSecret $ClientSecret -TenantID $TenantID
+
+Add-AzureRMAccount -AccessToken $token.Access_Token -AccountId $TenantID | Out-Null
 
 Add-AzureRMAccount -AccessToken .Access_Token -AccountId  | Out-Null
 
