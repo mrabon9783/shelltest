@@ -1,6 +1,6 @@
 [CmdletBinding()]
 Param (
-    $ClientID, $ClientSecret, $TenantID
+    $ClientID, $ClientSecret, $TenantID,$RGname
 )
 function GetAuthToken {
     [CmdletBinding()]
@@ -37,6 +37,4 @@ $token = GetAuthToken -ClientID $ClientID -ClientSecret $ClientSecret -TenantID 
 
 Add-AzureRMAccount -AccessToken $token.Access_Token -AccountId $TenantID | Out-Null
 
-Add-AzureRMAccount -AccessToken .Access_Token -AccountId  | Out-Null
-
-New-AzureRmResourceGroup -Name jenkinsmaderg -Location EastUS2
+New-AzureRmResourceGroup -Name $RGname -Location EastUS2
